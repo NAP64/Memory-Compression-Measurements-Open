@@ -1,0 +1,16 @@
+# compiled binarys
+driver
+
+# Object files
+*.o
+*.so
+
+# Output files
+*.csv
+*.txt
+
+#zlib folder
+include/zlib/*
+
+#vs code folder
+.vscode
