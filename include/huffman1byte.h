@@ -45,46 +45,36 @@ struct linked_tree_node //Similar to linked node. added tree offsets. May be rep
  */
 static int16_t Huffman1_quick_sort(struct linked_node * list, int16_t head, int16_t * tail)
 {
-    int16_t head1, head2, tail1, tail2, i;
-    head1 = head2 = tail1 = tail2 = -1;
+    int16_t heads[2], tails[2], i;
+    heads[0] = heads[1] = tails[0] = tails[1] = -1;
     *tail = head;
     //construct the two lists
     for (i = list[head].next; i != -1; i = list[i].next)
+    {
+        int temp = 1;
         if (list[i].info < list[head].info)
-        {
-            if (head1 == -1)
-                tail1 = head1 = i;
-            else
-            {
-                list[tail1].next = i;
-                tail1 = i;
-            }
-        }
+            temp = 0;
+        if (heads[temp] == -1)
+            heads[temp] = i;
         else
-        {
-            if (head2 == -1)
-                tail2 = head2 = i;
-            else
-            {
-                list[tail2].next = i;
-                tail2 = i;
-            }
-        }
+            list[tails[temp]].next = i;
+        tails[temp] = i;
+    }
     //sort and attach lists together
     list[head].next = -1;
-    if (tail1 != -1)
+    if (tails[0] != -1)
     {
-        list[tail1].next = -1;
-        head1 = Huffman1_quick_sort(list, head1, &tail1);
-        list[tail1].next = head;
-        head = head1;
+        list[tails[0]].next = -1;
+        heads[0] = Huffman1_quick_sort(list, heads[0], &(tails[0]));
+        list[tails[0]].next = head;
+        head = heads[0];
     }
-    if (tail2 != -1)
+    if (tails[1] != -1)
     {
-        list[tail2].next = -1;
-        head2 = Huffman1_quick_sort(list, head2, &tail2);
-        list[*tail].next = head2;
-        *tail = tail2;
+        list[tails[1]].next = -1;
+        heads[1] = Huffman1_quick_sort(list, heads[1], &(tails[1]));
+        list[*tail].next = heads[1];
+        *tail = tails[1];
     }
     return head;
 }
@@ -302,7 +292,7 @@ static uint64_t Huffman1_encode(uint8_t * data, uint8_t * dest, int size)
             tree[tree_index - 1].next = tree_index;
             tree[tree_index].next = -1;
         }
-        else
+        else    //impossible fall-back condition with old code
         {
             printf("?\n");
             int16_t temp = -1;
@@ -323,8 +313,8 @@ static uint64_t Huffman1_encode(uint8_t * data, uint8_t * dest, int size)
             }
         }
         tree_index++;
-        
     }
+    
     //Convert occurrence to depth in tree
     Huff_tree_level(tree, literals, Huff_make_tree(cur_tree), 0);
     
