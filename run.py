@@ -16,8 +16,11 @@ import subprocess
 
 #edit this part or create "run_config.py"
 flags = []      #additional flags for driver
+
+#files to run
 folders = []    #prior is not empty
 files = []      #quits if both empty
+
 compressions = []   #To compile
 layouts = []        #To compile
                     #If both empty, compiles everything
@@ -37,7 +40,7 @@ if os.path.exists("run_config.py"):
 
 p = subprocess.check_call(["make", "clean"])
 if (len(compressions) + len(layouts) == 0):
-    p = subprocess.check_call(["make", "-j"+str(threads), "default"]
+    p = subprocess.check_call(["make", "-j"+str(threads), "default"])
 else:
     p = subprocess.check_call(["make", "-j"+str(threads), "bootstrap", "driver"] + compressions + layouts)
 
