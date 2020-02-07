@@ -51,7 +51,7 @@ else:
     d = folders[0]
     l = os.listdir(d)
 while True:
-    d.sort()
+    l.sort()
     for f in [f for f in l if os.path.isfile(os.path.join(d, f))]:
         cmd = [driver, "-n", str(threads), "-f", os.path.join(d, f)] + flags
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
@@ -76,7 +76,7 @@ while True:
 
     output = []
     index = index + 1
-    if (index > len(folders)):
+    if (index >= len(folders)):
         break
     d = folders[index]
     l = os.listdir(d)
