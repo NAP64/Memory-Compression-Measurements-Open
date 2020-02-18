@@ -70,7 +70,6 @@ $(BIN_DRIVER): $(TARGET)/%: $(SRCDIR)/%.c
 list:
 	@echo "compression:" $(COMPRESSION_SO_SHORT) $(COMPRESSION_SDIR_SHORT)
 	@echo "layout:" $(LAYOUT_SO_SHORT) $(LAYOUT_SDIR_SHORT)
-	@echo $(COMPRESSION_SDIR_SO)
 
 bootstrap:
 	@mkdir -p $(TARGET) $(LAYOUTTARGET) $(COMPRESSIONTARGET)
